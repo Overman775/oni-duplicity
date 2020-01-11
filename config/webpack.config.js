@@ -4,7 +4,6 @@ const path = require("path");
 const webpack = require("webpack");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
 const isDev = process.env["NODE_ENV"] === "development";
 
@@ -55,7 +54,6 @@ module.exports = {
         include: [/src\/.+\.tsx?/]
       },
 
-      //  Run typescript through react-hot-loader to rewrite react components for hot loading.
       {
         test: /\.tsx?$/,
         use: [
@@ -63,13 +61,8 @@ module.exports = {
             loader: "ts-loader"
           }
         ],
-        exclude: [/\.worker\.ts$/]
       },
 
-      {
-        test: /\.worker\.ts$/,
-        use: "ts-loader"
-      },
       {
         test: /\.css$/,
         loader: ["style-loader", "css-loader"]
@@ -124,10 +117,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: path.resolve(paths.appSrc, "index.ejs")
-    }),
-
-    new MonacoWebpackPlugin({
-      languages: ["json"]
     })
   ].filter(x => x),
 

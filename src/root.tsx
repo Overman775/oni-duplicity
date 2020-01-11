@@ -1,8 +1,7 @@
 import * as React from "react";
-import { hot } from "react-hot-loader";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 
 import { ConnectedRouter } from "connected-react-router";
 
@@ -33,4 +32,4 @@ const Root: React.FC = () => (
   </I18NProvider>
 );
 
-export default hot(module)(Root);
+export default Root;

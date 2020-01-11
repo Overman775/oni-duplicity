@@ -1,3 +1,37 @@
+# 3.12.0
+
+- Add traits from Recreation Pack
+
+## 3.11.0
+
+- Toggle inner sandbox mode flag when sandbox difficulty is changed. Possible fix for sandbox mode not changing with difficulty setting.
+- Switch to supporting Recreation Pack update.
+
+## 3.10.0
+
+- Improved raw editor - Tree view and field inputs.
+- Fix Czech and spanish translations not working.
+
+## 3.9.0
+
+- Fix geyser sliders latching to 0 or 100%.
+- Fix UI lag when choosing slider values.
+- Add missing traits Allergies and Archaeologist.
+- Add Spanish translations, contributed by Galo223344.
+- Add Czech translations, contributed by sorashi.
+- Fix unable to save if a file is loaded after the example is loaded. Contributed by ferrybig.
+
+## 3.8.5
+
+- Update parser to support save version 7.12
+
+## 3.8.4
+
+- Change arm color with body.
+- Update parser for salt water geyser support.
+- Fix parsing certain modded fields such as "<Threshold>k\_\_BackingField".
+- Fix duplicant clones sharing ownership with their original (Fixes bed sharing).
+
 ## 3.8.3
 
 - Update for LU support.

@@ -14,9 +14,9 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import Slider from "@material-ui/lab/Slider";
+import Slider from "@material-ui/core/Slider";
 
-import AbstractGeyserEditor from "@/services/oni-save/components/AbstractGeyserEditor";
+import useGeyser from "@/services/oni-save/hooks/useGeyser";
 
 import { keysOfType } from "@/utils";
 
@@ -28,15 +28,15 @@ export interface GeyserListItemProps {
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      width: theme.spacing.unit * 45,
+      width: theme.spacing(45),
       display: "flex",
       flexDirection: "column",
-      padding: theme.spacing.unit * 2
+      padding: theme.spacing(2)
     },
     titleBar: {
       display: "flex",
       flexDirection: "row",
-      marginBottom: theme.spacing.unit
+      marginBottom: theme.spacing()
     },
     titleControls: {
       display: "flex",
@@ -44,10 +44,10 @@ const styles = (theme: Theme) =>
       marginLeft: "auto"
     },
     sliderSection: {
-      marginTop: theme.spacing.unit
+      marginTop: theme.spacing()
     },
     valueLabel: {
-      marginBottom: theme.spacing.unit
+      marginBottom: theme.spacing()
     }
   });
 
@@ -57,40 +57,37 @@ const GeyserListItem: React.FC<Props> = ({
   classes,
   className,
   gameObjectId
-}) => (
-  <AbstractGeyserEditor gameObjectId={gameObjectId}>
-    {({ geyserType, emitRate, onChangeEmitRate, onChangeGeyserType }) => (
-      <Paper className={classnames(className, classes.root)}>
-        <div className={classes.titleBar}>
-          <Typography variant="h6">{geyserType}</Typography>
-          <div className={classes.titleControls} />
-        </div>
-        <Divider />
-        <Select
-          value={geyserType || ""}
-          onChange={e => onChangeGeyserType(e.target.value)}
-        >
-          {keysOfType(GeyserType).map(typeName => (
-            <MenuItem key={typeName} value={typeName}>
-              {typeName}
-            </MenuItem>
-          ))}
-        </Select>
-        <div className={classes.sliderSection}>
-          <Typography className={classes.valueLabel} id="rate-label">
-            Rate
+}) => {
+  const { geyserType, emitRate, onChangeEmitRate, onChangeGeyserType } = useGeyser(gameObjectId);
+  return (
+    <Paper className={classnames(className, classes.root)}>
+      <div className={classes.titleBar}>
+        <Typography variant="h6">{geyserType}</Typography>
+        <div className={classes.titleControls} />
+      </div>
+      <Divider />
+      <Select
+        value={geyserType || ""}
+        onChange={e => onChangeGeyserType(e.target.value as string)}
+      >
+        {keysOfType(GeyserType).map(typeName => (
+          <MenuItem key={typeName} value={typeName}>
+            {typeName}
+          </MenuItem>
+        ))}
+      </Select>
+      <div className={classes.sliderSection}>
+        <Typography className={classes.valueLabel} id="rate-label">
+          Rate
           </Typography>
-          <Slider
-            aria-labelledby="rate-label"
-            value={emitRate || 0}
-            min={0}
-            max={1}
-            onChange={(_, value) => onChangeEmitRate(value)}
-          />
-        </div>
-      </Paper>
-    )}
-  </AbstractGeyserEditor>
-);
+        <Slider
+          aria-labelledby="rate-label"
+          defaultValue={(emitRate || 0) * 100}
+          onChangeCommitted={(_, value) => onChangeEmitRate((value as number) / 100)}
+        />
+      </div>
+    </Paper>
+  );
+}
 
 export default withStyles(styles)(GeyserListItem);

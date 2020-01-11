@@ -1,8 +1,8 @@
 import * as React from "react";
 
+import useLoadFile from "@/services/oni-save/hooks/useLoadFile";
+
 export interface AbstractLoadButtonProps {
-  disabled: boolean;
-  onLoadSave(file: File): void;
   children(props: AbstractLoadButtonRenderProps): React.ReactChild;
 }
 export interface AbstractLoadButtonRenderProps {
@@ -12,10 +12,9 @@ export interface AbstractLoadButtonRenderProps {
 
 type Props = AbstractLoadButtonProps;
 const AbstractLoadButton: React.FC<Props> = ({
-  disabled,
-  onLoadSave,
   children
 }) => {
+  const { disabled, onLoadSave } = useLoadFile();
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const onClick = React.useCallback(() => {

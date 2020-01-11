@@ -12,7 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 
-import AbstractPlanet from "@/services/oni-save/components/AbstractPlanet";
+import usePlanet from "@/services/oni-save/hooks/usePlanet";
 
 import RecoverableElement from "./components/RecoverableElement";
 
@@ -24,15 +24,15 @@ export interface PlanetListItemProps {
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      width: theme.spacing.unit * 45,
+      width: theme.spacing(45),
       display: "flex",
       flexDirection: "column",
-      padding: theme.spacing.unit * 2
+      padding: theme.spacing(2)
     },
     titleBar: {
       display: "flex",
       flexDirection: "row",
-      marginBottom: theme.spacing.unit
+      marginBottom: theme.spacing()
     },
     titleControls: {
       display: "flex",
@@ -40,7 +40,7 @@ const styles = (theme: Theme) =>
       marginLeft: "auto"
     },
     divider: {
-      marginBottom: theme.spacing.unit
+      marginBottom: theme.spacing()
     },
     contentLayout: {
       display: "flex",
@@ -51,48 +51,48 @@ const styles = (theme: Theme) =>
       height: 100
     },
     planetImg: {
-      marginLeft: theme.spacing.unit,
-      marginRight: theme.spacing.unit
+      marginLeft: theme.spacing(),
+      marginRight: theme.spacing()
     }
   });
 
 type Props = PlanetListItemProps & WithStyles<typeof styles>;
 
-const PlanetListItem: React.FC<Props> = ({ classes, className, planetId }) => (
-  <AbstractPlanet planetId={planetId}>
-    {({ planet }) => {
-      if (!planet) {
-        return <Typography>No Data</Typography>;
-      }
-      const { type } = planet;
-      return (
-        <Paper className={classnames(className, classes.root)}>
-          <div className={classes.titleBar}>
-            <Typography variant="h6">{type}</Typography>
-            <div className={classes.titleControls} />
-          </div>
-          <Divider className={classes.divider} />
-          <div className={classes.contentLayout}>
-            <div className={classes.planetImg}>
-              <svg
-                viewBox="0 0 70 70"
-                width={70}
-                height={70}
-                className={classes.planetImg}
-              >
-                <circle cx={35} cy={35} r={35} fill="red" />
-              </svg>
-            </div>
-            <div>
-              {planet.recoverableElements.map(([hash, chance]) => (
-                <RecoverableElement hash={hash} chance={chance} />
-              ))}
-            </div>
-          </div>
-        </Paper>
-      );
-    }}
-  </AbstractPlanet>
-);
+const PlanetListItem: React.FC<Props> = ({ classes, className, planetId }) => {
+  const { planet } = usePlanet(planetId);
+
+  if (!planet) {
+    return <Typography>No Data</Typography>;
+  }
+
+  const { type } = planet;
+
+  return (
+    <Paper className={classnames(className, classes.root)}>
+      <div className={classes.titleBar}>
+        <Typography variant="h6">{type}</Typography>
+        <div className={classes.titleControls} />
+      </div>
+      <Divider className={classes.divider} />
+      <div className={classes.contentLayout}>
+        <div className={classes.planetImg}>
+          <svg
+            viewBox="0 0 70 70"
+            width={70}
+            height={70}
+            className={classes.planetImg}
+          >
+            <circle cx={35} cy={35} r={35} fill="red" />
+          </svg>
+        </div>
+        <div>
+          {planet.recoverableElements.map(([hash, chance]) => (
+            <RecoverableElement hash={hash} chance={chance} />
+          ))}
+        </div>
+      </div>
+    </Paper>
+  );
+}
 
 export default withStyles(styles)(PlanetListItem);

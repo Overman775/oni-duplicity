@@ -1,10 +1,10 @@
-import { forEach } from "lodash-es";
+import { forEach } from "lodash";
 
 export function attachProps<
   TTarget,
   TSubComponents extends Record<string, any>
 >(component: TTarget, subComponents: TSubComponents): TTarget & TSubComponents {
-  const c = component as TTarget & TSubComponents;
+  const c = component as any; //TTarget & TSubComponents;
   forEach(subComponents, (component, key) => {
     c[key] = component;
   });

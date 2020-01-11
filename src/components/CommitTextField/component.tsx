@@ -10,9 +10,13 @@ interface State {
   value: string | null;
 }
 class CommitTextField extends React.Component<CommitTextFieldProps, State> {
-  state = {
-    value: null
-  };
+  constructor(props: CommitTextFieldProps) {
+    super(props);
+
+    this.state = {
+      value: null
+    };
+  }
 
   render() {
     const {
@@ -24,10 +28,11 @@ class CommitTextField extends React.Component<CommitTextFieldProps, State> {
       ...props
     } = this.props;
     const { value: editValue } = this.state;
+    const displayValue = (editValue == null) ? prevValue : editValue;
     return (
       <TextField
         {...props}
-        value={editValue || prevValue}
+        value={displayValue}
         onChange={this._onChange}
         onBlur={this._onBlur}
         onKeyPress={this._onKeyPress}
@@ -55,7 +60,7 @@ class CommitTextField extends React.Component<CommitTextFieldProps, State> {
     }
   };
 
-  private _onBlur = (e: React.FocusEvent) => {
+  private _onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { onBlur } = this.props;
     if (onBlur) {
       onBlur(e);
